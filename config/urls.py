@@ -23,3 +23,8 @@ urlpatterns = [
     path('', include('base.urls')),
     path('', include('trips.urls')),
 ]
+
+handler404 = 'base.views.custom_page_not_found_view'
+handler500 = 'base.views.custom_error_view'
+handler403 = 'base.views.custom_permission_denied_view'
+handler400 = 'base.views.custom_bad_request_view'
