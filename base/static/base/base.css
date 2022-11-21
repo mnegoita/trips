@@ -1,0 +1,706 @@
+:root {
+    --color-01: #009acd; 
+    --color-02: #006b8f;
+    --color-03: #002e3d;
+    --color-04: #cceaf5;
+    --color-05: #b2e0f0;
+    --color-06: #001e29;
+}
+/*--------------------------------------------------------------
+# Fonts
+--------------------------------------------------------------*/
+@font-face {
+    font-family: "GreatVibes-Regular";
+    src: url("../vendor/fonts/great_vibes/GreatVibes-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Sono-Regular";
+    src: url("../vendor/fonts/sono/static/Sono/Sono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "OpenSans-Regular";
+    src: url("../vendor/fonts/open_sans/static/OpenSans/OpenSans-Regular.ttf") format("truetype");
+}
+/*--------------------------------------------------------------
+# General
+--------------------------------------------------------------*/
+body {
+    font-family: "Open Sans", sans-serif;
+    color: var(--color-03);
+}
+a {
+    color: var(--color-01);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--color-02);
+    text-decoration: none;
+}
+:focus-visible {
+    outline: 2px solid var(--color-01);
+}
+.form-control:focus {
+    border-color: #9966cc;
+    border-color: var(--color-01);
+    box-shadow: 0 0 0 0.2rem rgba(0,154,205, 0.2);
+}
+/*--------------------------------------------------------------
+# Headings
+--------------------------------------------------------------*/
+
+h1, h2, h3, h4, h5, h6, .font-primary {
+    font-family: 'Sono', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+h1, .h1 {
+    font-size: 1.9rem;
+    font-weight: 800;
+}
+h2, .h2 {
+    font-size: 1.7rem;
+    font-weight: 700;
+}
+h3, .h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+h4, .h4 {
+    font-size: 1.25rem;
+}
+h5, .h5 {
+    font-size: 1.1rem;
+}  
+h6, .h6 {
+    font-size: 1rem;
+}  
+b,
+strong {
+    font-weight: bolder;
+}
+
+/*--------------------------------------------------------------
+# Back to top button
+--------------------------------------------------------------*/
+
+#back-to-top {
+    width: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    z-index: 999;
+    display: none;
+    cursor: pointer;
+    -moz-transform: rotate(270deg);
+    -webkit-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+    position: fixed;
+    bottom: 50px;
+    right: 0;
+    background-color: var(--color-04);
+    color: var(--color-03);
+    text-align: center;
+    font-size: 30px;
+    text-decoration: none;
+}
+#back-to-top:hover {
+    background-color: var(--color-05);
+    color: var(--color-06);
+}
+
+/*--------------------------------------------------------------
+# Container trips 
+--------------------------------------------------------------*/
+.container-trips {
+    width: auto;
+    max-width: 1600px;
+}
+
+/*--------------------------------------------------------------
+# Header
+--------------------------------------------------------------*/
+
+#header {
+    height: 80px;
+    transition: all 0.5s;
+    z-index: 997;
+    padding: 20px 0;
+}
+#header .logo h1 {
+    font-size: 48px;
+    font-family: "GreatVibes-Regular", cursive;
+    text-align: center;
+    margin: 0;
+    line-height: 1;
+    font-weight: 600;
+    letter-spacing: 5px;
+} 
+#header .logo h1 a, #header .logo h1 a:hover {
+    color: var(--color-01);
+    text-decoration: none;
+}
+
+/*--------------------------------------------------------------
+# Navigation Menu
+--------------------------------------------------------------*/
+
+/* ------ Desktop Navigation ------ */
+.nav-menu, .nav-menu * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.nav-menu > ul > li {
+    position: relative;
+    white-space: nowrap;
+    float: left;
+}
+.nav-menu a {
+    display: block;
+    position: relative;
+    padding: 10px 15px;
+    transition: 0.3s;
+    font-size: 18px;
+}
+.nav-menu a:hover, .nav-menu li:hover > a { 
+    text-decoration: none;
+}
+.nav-menu .drop-down ul {
+    display: block;
+    position: absolute;
+    left: 0;
+    top: calc(100% - 30px);
+    z-index: 99;
+    opacity: 0;
+    visibility: hidden;
+    padding: 10px 0;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(204,234,245, 0.8);
+    transition: ease all 0.3s;
+}
+.nav-menu .drop-down:hover > ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+}
+.nav-menu .drop-down li {
+    min-width: 180px;
+    position: relative;
+}
+.nav-menu .drop-down ul a {
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: none;
+}
+.nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul li:hover > a {
+    color: var(--color-06);
+}
+.header-search-form{
+    float:right;
+    margin-right: 5px;
+}
+.header-search-form form {
+    background: #fff; 
+    border: 1px solid var(--color-01);
+    padding: 3px 10px;
+    position: relative;
+}
+.header-search-form form input[type="text"] {
+    border: 0;
+    padding: 4px;
+    width: calc(100% - 40px);
+}
+.header-search-form form button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    background: none;
+    font-size: 16px;
+    padding: 0 15px;
+    margin: -1px;
+    background: var(--color-01);
+    color: #fff; 
+    transition: 0.3s;
+}
+.header-search-form form button:hover {
+    background: var(--color-02);
+}
+.login-logout {
+    float: right;
+}
+
+/* ------ Mobile Navigation ------ */
+.mobile-nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 9999;
+    overflow-y: auto;
+    left: -260px;
+    width: 260px;
+    padding-top: 18px;
+    background: var(--color-01);
+    transition: 0.4s;
+}
+.mobile-nav * {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.mobile-nav a {
+    display: block;
+    position: relative;
+    color: #fff;
+    padding: 10px 20px;
+    font-weight: 500;
+}
+.mobile-nav a:hover, .mobile-nav li:hover > a {
+    color: var(--color-05);
+    text-decoration: none;
+}
+.mobile-nav .drop-down > a:after {
+    content: "\ea99";
+    font-family: IcoFont;
+    padding-left: 10px;
+    position: absolute;
+    right: 15px;
+}
+.mobile-nav .active.drop-down > a:after {
+    content: "\eaa0";
+}
+.mobile-nav .drop-down > a {
+    padding-right: 35px;
+}
+.mobile-nav .drop-down ul {
+    display: none;
+    overflow: hidden;
+}
+.mobile-nav .drop-down li {
+    padding-left: 20px;
+}
+.mobile-nav-toggle {
+    position: fixed;
+    right: 15px;
+    top: 15px;
+    z-index: 9998;
+    border: 0;
+    background: none;
+    font-size: 24px;
+    transition: all 0.4s;
+    outline: none !important;
+    line-height: 1;
+    cursor: pointer;
+    text-align: right;
+}
+.mobile-nav-toggle i {
+    color: #fff;
+}
+.mobile-nav-overly {
+    width: 100%;
+    height: 100%;
+    z-index: 9997;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background: rgba(0,107,143, 0.8);
+    overflow: hidden;
+    display: none;
+} 
+.mobile-nav-active {
+    overflow: hidden;
+}
+.mobile-nav-active .mobile-nav {
+    left: 0;
+}
+.mobile-nav-active .mobile-nav-toggle i {
+    color: #fff; 
+}
+.mobile-nav .search-form form {
+    background: #fff; 
+    border: 1px solid var(--color-01);
+    position: relative;
+}
+.mobile-nav .search-form form input[type="text"] {
+    border: 0;
+    padding: 4px;
+}
+.mobile-nav .search-form form button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    border: 0;
+    background: none;
+    font-size: 16px;
+    padding: 5px 15px;
+    margin: -1px;
+    background: var(--color-02);
+    color: #fff;
+    transition: 0.3s;
+}
+.mobile-nav .search-form form button:hover {
+    background: var(--color-03);
+}
+
+/*--------------------------------------------------------------
+# Main
+--------------------------------------------------------------*/
+#main {
+    min-height: calc(100vh - 151px);
+}
+
+/*--------------------------------------------------------------
+# Footer  
+--------------------------------------------------------------*/
+
+#footer {
+    background: #fff;
+    padding: 0 0 30px 0;
+    color: var(--color-01); 
+    font-size: 14px;
+}
+#footer .site-version {
+    text-align: center;
+    padding-top: 20px;
+}
+
+/*--------------------------------------------------------------
+# Breadcrumbs
+--------------------------------------------------------------*/
+
+.breadcrumbs {
+    padding: 15px 0;
+    min-height: 40px;
+}
+.breadcrumbs li {
+    background: none;
+}
+.breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.breadcrumbs ol li + li {
+    padding-left: 10px;
+}
+.breadcrumbs ol li + li::before {
+    display: inline-block;
+    padding-right: 10px;
+    color: var(--color-01);
+    content: ">>";
+}
+
+@media (max-width: 768px) {
+    .breadcrumbs .d-flex {
+      display: block !important;
+    }
+    .breadcrumbs ol {
+      display: block;
+    }
+    .breadcrumbs ol li {
+      display: inline-block;
+    }
+}
+
+/*--------------------------------------------------------------
+# Page  
+--------------------------------------------------------------*/
+
+.page-heading {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.page-buttons {
+    padding: 8px 0;
+    min-height: 40px;
+}
+
+/* ------ pagination ------ */
+
+.page-content .pagination ul {
+    display: flex;
+    padding-left: 0;
+    list-style: none;
+}
+.page-content .pagination li {
+    border: 1px solid #fff;
+    margin: 0 5px;
+    transition: 0.3s;
+}
+.page-content .pagination li.active {
+    background: #fff;
+}
+.page-content .pagination li a {
+    padding: 7px 16px;
+    display: inline-block;
+}
+.page-content .pagination li.active, .pagination li:hover {
+    background: var(--color-02);
+    border: var(--color-02);
+}
+.page-content .pagination li.active a, .pagination li:hover a {
+    color: #fff;
+}
+.page-content .pagination li.disabled {
+    background: #fff;
+    border: 1px solid #fff;
+}
+.page-content .pagination li.disabled i {
+    color: #f1f1f1;
+    padding: 10px 16px;
+    display: inline-block;
+}
+
+/*--------------------------------------------------------------
+# Search Page
+--------------------------------------------------------------*/
+
+.search-page {
+    padding: 30px; 
+}
+.search-page form button {
+    background: var(--color-01);
+    border: var(--color-01);
+    padding: 6px;
+    margin-left: 6px;
+    color: #fff;
+}
+.search-page form button:hover {
+    background: var(--color-02);
+    color: #fff;
+}
+.search-page .refine-search {
+    background: var(--color-01);
+    color: #fff;
+    margin-top: 10px;
+}
+.search-page .refine-search:hover {
+    background: var(--color-02);
+    color: #fff;
+}
+
+/* ------ search page sidebar ------ */
+.search-page .sidebar a {
+    text-decoration: none;
+}
+.search-page .sidebar .sidebar-title {
+    font-size: 20px;
+    font-weight: 700;
+    padding: 0 0 0 0;
+    margin: 0 0 15px 0;
+    color: var(--color-01);
+    position: relative;
+}
+.search-page .sidebar .sidebar-item {
+    margin-bottom: 10px;
+}
+.search-page .sidebar .sidebar-item ul {
+    list-style: none;
+    padding: 0;
+}
+
+/* ------ search page no query ------ */
+.search-no-query form button {
+    background: var(--color-01);
+    border: var(--color-01);
+    color: #fff;
+}
+.search-no-query form button:hover {
+    background: var(--color-02);
+    color: #fff;
+}
+.search-no-query .icofont-search {
+    padding-right: 16px;
+}
+.search-no-query .card-header {
+    background: var(--color-01);
+    color: #fff;
+}
+.search-no-query .card-footer {
+    background: var(--color-01);
+    color: #fff;
+}
+.search-no-query .card-body {
+    color: var(--color-01);
+}
+
+/*--------------------------------------------------------------
+# Buttons Colors
+--------------------------------------------------------------*/
+
+.btn-add {
+    color: #fff;
+    background-color: var(--color-01);
+    border-color:  var(--color-01);
+}
+.btn-add:hover {
+    color: #fff;
+    background-color: var(--color-02);
+    border-color: var(--color-02);
+}
+
+.btn-edit {
+    color: #fff;
+    background-color: #e0a354;
+    border-color: #e0a354;
+}
+.btn-edit:hover {
+    color: #fff;
+    background-color: #b38243;
+    border-color:  #b38243;
+}
+
+.btn-clone {
+    color: #fff;
+    background-color: #5b7a5b;
+    border-color:  #5b7a5b;
+}
+.btn-clone:hover {
+    color: #fff;
+    background-color: #99cc99;
+    border-color: #99cc99;
+}
+
+.btn-delete {
+    color: #fff;
+    background-color: #d81a45;
+    border-color: #d81a45;
+}
+.btn-delete:hover {
+    color: #fff;    
+    background-color: #e8768f;
+    border-color:  #e8768f;
+}
+
+.btn-filter {
+    color: #fff;
+    background-color: var(--color-01);
+    border-color:  var(--color-01);
+}
+.btn-filter:hover {
+    color: #fff;
+    background-color: var(--color-02);
+    border-color: var(--color-02);
+}
+
+.btn-save {
+    color: #fff;
+    background-color: #20b2aa;
+    border-color: #20b2aa;
+}
+.btn-save:hover {
+    color: #fff;
+    background-color: #4cc1bb;
+    border-color:  #4cc1bb;
+}
+
+.btn-cancel {
+    color: #fff;
+    background-color: #cc6000;
+    border-color: #cc6000;
+}
+.btn-cancel:hover {
+    color: #fff;
+    background-color: #ff7800;
+    border-color:  #ff7800;
+}
+
+.btn-login-logout {
+    color: #fff;
+    background-color: var(--color-01);
+    border-color: var(--color-01);
+    height: 40px;
+}
+.btn-login-logout:hover {
+    color: #fff;
+    background-color: var(--color-02);
+    border-color: var(--color-02);
+    height: 40px;
+}
+
+/*--------------------------------------------------------------
+# Delete Question 
+--------------------------------------------------------------*/
+
+.delete-question {
+    min-height: 5em;
+    color: #fff;
+    text-align: center;
+    padding-top: 30px;
+    background-color: #bc2a28;
+}
+
+/*--------------------------------------------------------------
+# Textarea 
+--------------------------------------------------------------*/
+
+textarea {
+    width: 100%;
+}
+
+/*--------------------------------------------------------------
+# Item Boxes 
+--------------------------------------------------------------*/
+
+.item-boxes {
+    padding-bottom: 20px;
+}
+.item-boxes .item-box {
+    padding: 30px;
+    position: relative;
+    overflow: hidden;
+    margin: 0  0 40px 0;
+    background: #fff; 
+    box-shadow: 0 5px 26px 0 rgba(0,154,205, 0.3); 
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    border: 1px solid #fff; 
+    width: 100%; 
+    border-radius: 20px;
+}
+.item-boxes .title {
+    font-weight: 700;
+    margin-bottom: 15px;
+    font-size: 18px;
+}
+.item-boxes .title a {
+    color: var(--color-02);
+}
+.item-boxes .item-box:hover, .item-boxes .item-box:focus {
+    background-color: var(--color-06);
+    transform:scale(1.1);
+    border-color: var(--color-06);
+}
+.item-boxes .item-box:hover a, .item-boxes .item-box:focus a {
+    color: var(--color-05);
+}
+
+/*--------------------------------------------------------------
+# ckeditor customization
+--------------------------------------------------------------*/
+
+.cke_top {
+    background: var(--color-04) !important;
+}
+.cke_bottom {
+    border-top: 1px solid var(--color-01); 
+    background: var(--color-04) !important;
+}

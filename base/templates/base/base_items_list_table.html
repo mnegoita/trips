@@ -1,0 +1,45 @@
+{% extends 'base/base.html' %}
+{% load render_table from django_tables2 %}
+{% load custom_filters %}
+{% load buttons %}
+
+
+{% block head_title %}
+    {{ model|verbose_name_plural }}    
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+    <div class="row">            
+        <div class="col">            
+            <div class="page-buttons text-right">
+                {% if user.is_authenticated %}
+                    {% add_button app_name obj_name %}
+                {% endif %}
+            </div>            
+        </div>
+    </div> 
+</section>
+
+<section class="page-heading">
+    <div class="row">    
+        <div class="col text-center">
+            <h1> {{ model|verbose_name_plural }} </h1>
+        </div>
+    </div>
+</section>
+
+<section class="page-content">
+
+    <div class="row">
+        <div class="col col-md-6 offset-md-3"> 
+            {% render_table table %}
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+

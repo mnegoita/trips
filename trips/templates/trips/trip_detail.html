@@ -1,0 +1,776 @@
+{% extends 'base/base.html' %}
+{% load buttons %}
+{% load custom_filters %}
+
+
+{% block head_title %}
+    {{ object }} 
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+    <div class="row">
+        <div class="col-8">            
+            <div class="breadcrumbs">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'trips:trip_list' %}"> Trips </a></li>
+                    <li><a href="#"> {{ object }} </a></li>
+                </ol>
+            </div>            
+        </div>
+        <div class="col-4">            
+            <div class="page-buttons text-right">     
+                {% if user.is_authenticated %}              
+                    {% edit_button object %}
+                    {% clone_button object %}
+                    {% delete_button object %}
+                {% endif %}
+            </div>            
+        </div>
+    </div>     
+</section>
+
+<section class="page-heading">
+    <div class="row">    
+        <div class="col">
+            <h1> {{ object }} </h1>
+        </div>
+    </div>
+</section>
+
+<section class="page-content">
+
+    <div class="row">
+        <div class="col">
+            <div class="row">   
+                <div class="col text-center">
+                    <h2> Trip Details </h2>
+                </div>
+            </div>
+               
+            <div class="row">
+                <div class="col col-md-6 offset-md-3 ">
+                    <div class="row">
+                        <div class="col-2">
+                            From
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.orig.get_absolute_url }}"> {{ object.orig }} </a>
+                        </div>
+                        <div class="col-2">
+                            To
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.dest.get_absolute_url }}"> {{ object.dest }} </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-2">
+                            Travellers
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.trav.get_absolute_url }}"> {{ object.trav }} </a>
+                        </div>
+                        <div class="col-2">
+                            Trip Price
+                        </div>
+                        <div class="col">
+                             {{ object.price }} {{ object.currency }} 
+                        </div>
+                        
+                    </div>
+ 
+                    <div class="row">
+                        <div class="col-2">
+                            Date Found
+                        </div>
+                        <div class="col">
+                            {{ object.date_found }}
+                        </div>
+                        <div class="col-2">
+                            Where Found
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.source_found.get_absolute_url }}"> {{ object.source_found }} </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>               
+            
+        </div>
+    </div>
+   
+    <div class="row mt-4">
+
+        <div class="col col-sm-12 col-md-6">
+
+            <div class="row">
+                <div class="col text-center">
+                    <h3> Outgoing Trip </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <h4> Details </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Departure Date
+                </div>
+                <div class="col">
+                    {{ object.out_dep_date }}
+                </div>
+                <div class="col-3">
+                    Deaparture Day
+                </div>
+                <div class="col">
+                    <a href="{{ object.out_dep_day.get_absolute_url }}"> {{ object.out_dep_day.get_tripday_display }} </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    Arrival Date
+                </div>
+                <div class="col">
+                    {{ object.out_arr_date }}
+                </div>
+                <div class="col-3">
+                    Arrival Day
+                </div>
+                <div class="col">
+                    <a href="{{ object.out_arr_day.get_absolute_url }}"> {{ object.out_arr_day.get_tripday_display }} </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Stop Duration
+                </div>
+                <div class="col">
+                    {% if object.out_stop_duration %}
+                        {{ object.out_stop_duration|floor_div:60 }} h {{ object.out_stop_duration|modulo:60 }} min
+                    {% else %}
+                        <span> &mdash; </span>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    Trip Duration
+                </div>
+                <div class="col">                            
+                    {{ object.out_duration|floor_div:60 }} h {{ object.out_duration|modulo:60 }} min                                                          
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Trip Price
+                </div>
+                <div class="col">
+                    {% if object.out_price %}
+                        {{ object.out_price }} {{ object.currency }}
+                    {% else %}
+                        <span> &mdash; </span>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    Trip Class
+                </div>
+                <div class="col">
+                    <a href="{{ object.out_class.get_absolute_url }}"> {{ object.out_class }} </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <h4> First Flight </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <div class="row">
+                        <div class="col">
+                            First Flight Name
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.out_first_flight.get_absolute_url }}"> 
+                                {{ object.out_first_flight }} 
+                            </a>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Duration
+                        </div>
+                        <div class="col">
+                            {% if object.out_first_flight.duration %}
+                                {{ object.out_first_flight.duration|floor_div:60 }} h 
+                                {{ object.out_first_flight.duration|modulo:60 }} min
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Airline
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.out_first_flight.airline.get_absolute_url }}"> 
+                                {{ object.out_first_flight.airline }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Airplane
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.out_first_flight.airplane.get_absolute_url }}"> 
+                                {{ object.out_first_flight.airplane }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Airport
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.out_first_flight.depart_airport.get_absolute_url }}"> 
+                                {{ object.out_first_flight.depart_airport }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Time
+                        </div>
+                        <div class="col">
+                            {{ object.out_first_flight.depart_time }} 
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Terminal
+                        </div>
+                        <div class="col">
+                            {% if object.out_first_flight_dep_term %}
+                                <a href="{{ object.out_first_flight_dep_term.get_absolute_url }}"> 
+                                    {{ object.out_first_flight_dep_term }} 
+                                </a>
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Airport
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.out_first_flight.arrive_airport.get_absolute_url }}"> 
+                                {{ object.out_first_flight.arrive_airport }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Time
+                        </div>
+                        <div class="col">
+                            {{ object.out_first_flight.arrive_time }} 
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Terminal
+                        </div>
+                        <div class="col">
+                            {% if object.out_first_flight_arr_term %}
+                                <a href="{{ object.out_first_flight_arr_term.get_absolute_url }}"> 
+                                    {{ object.out_first_flight_arr_term }} 
+                                </a>
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                </div>
+            </div>
+        
+
+            {% if object.out_second_flight %}
+                <div class="row">
+                    <div class="col text-center">
+                        <h4> Second Flight </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                        <div class="row">
+                            <div class="col">
+                                Second Flight Name
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.out_second_flight.get_absolute_url }}"> 
+                                    {{ object.out_second_flight }} 
+                                </a>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Duration
+                            </div>
+                            <div class="col">
+                                {% if object.out_second_flight.duration %}
+                                    {{ object.out_second_flight.duration|floor_div:60 }} h 
+                                    {{ object.out_second_flight.duration|modulo:60 }} min
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Airline
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.out_second_flight.airline.get_absolute_url }}"> 
+                                    {{ object.out_second_flight.airline }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Airplane
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.out_second_flight.airplane.get_absolute_url }}"> 
+                                    {{ object.out_second_flight.airplane }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Airport
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.out_second_flight.depart_airport.get_absolute_url }}"> 
+                                    {{ object.out_second_flight.depart_airport }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Time
+                            </div>
+                            <div class="col">
+                                {{ object.out_second_flight.depart_time }} 
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Terminal
+                            </div>
+                            <div class="col">
+                                {% if object.out_second_flight_dep_term %}
+                                    <a href="{{ object.out_second_flight_dep_term.get_absolute_url }}"> 
+                                        {{ object.out_second_flight_dep_term }} 
+                                    </a>
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Airport
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.out_second_flight.arrive_airport.get_absolute_url }}"> 
+                                    {{ object.out_second_flight.arrive_airport }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Time
+                            </div>
+                            <div class="col">
+                                {{ object.out_first_flight.arrive_time }} 
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Terminal
+                            </div>
+                            <div class="col">
+                                {% if object.out_second_flight_arr_term %}
+                                    <a href="{{ object.out_second_flight_arr_term.get_absolute_url }}"> 
+                                        {{ object.out_second_flight_arr_term }} 
+                                    </a>
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+        <div class="col col-sm-12 col-md-6">
+            <div class="row">
+                <div class="col text-center">
+                    <h3> Returning Trip </h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <h4> Details </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Departure Date
+                </div>
+                <div class="col">
+                    {{ object.ret_dep_date }}
+                </div>
+                <div class="col-3">
+                    Deaparture Day
+                </div>
+                <div class="col">
+                    <a href="{{ object.ret_dep_day.get_absolute_url }}"> {{ object.ret_dep_day.get_tripday_display }} </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Arrival Date
+                </div>
+                <div class="col">
+                    {{ object.ret_arr_date }}
+                </div>
+                <div class="col-3">
+                    Arrival Day
+                </div>
+                <div class="col">
+                    <a href="{{ object.ret_arr_day.get_absolute_url }}"> {{ object.ret_arr_day.get_tripday_display }} </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Stop Duration
+                </div>
+                <div class="col">
+                    {% if object.ret_stop_duration %}
+                        {{ object.ret_stop_duration|floor_div:60 }} h {{ object.ret_stop_duration|modulo:60 }} min
+                    {% else %}
+                        <span> &mdash; </span>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    Trip Duration
+                </div>
+                <div class="col">                            
+                    {{ object.ret_duration|floor_div:60 }} h {{ object.ret_duration|modulo:60 }} min                                                          
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    Trip Price
+                </div>
+                <div class="col">
+                    {% if object.ret_price %}
+                        {{ object.ret_price }} {{ object.currency }}
+                    {% else %}
+                        <span> &mdash; </span>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    Trip Class
+                </div>
+                <div class="col">
+                    <a href="{{ object.ret_class.get_absolute_url }}"> {{ object.ret_class }} </a>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-center">
+                    <h4> First Flight </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <div class="row">
+                        <div class="col">
+                            First Flight Name
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.ret_first_flight.get_absolute_url }}"> 
+                                {{ object.ret_first_flight }} 
+                            </a>
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Duration
+                        </div>
+                        <div class="col">
+                            {% if object.ret_first_flight.duration %}
+                                {{ object.ret_first_flight.duration|floor_div:60 }} h 
+                                {{ object.ret_first_flight.duration|modulo:60 }} min
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Airline
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.ret_first_flight.airline.get_absolute_url }}"> 
+                                {{ object.ret_first_flight.airline }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Flight Airplane
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.ret_first_flight.airplane.get_absolute_url }}"> 
+                                {{ object.ret_first_flight.airplane }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Airport
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.ret_first_flight.depart_airport.get_absolute_url }}"> 
+                                {{ object.ret_first_flight.depart_airport }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Time
+                        </div>
+                        <div class="col">
+                            {{ object.ret_first_flight.depart_time }} 
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Depart Terminal
+                        </div>
+                        <div class="col">
+                            {% if object.ret_first_flight_dep_term %}
+                                <a href="{{ object.ret_first_flight_dep_term.get_absolute_url }}"> 
+                                    {{ object.ret_first_flight_dep_term }} 
+                                </a>
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Airport
+                        </div>
+                        <div class="col">
+                            <a href="{{ object.ret_first_flight.arrive_airport.get_absolute_url }}"> 
+                                {{ object.ret_first_flight.arrive_airport }} 
+                            </a>
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Time
+                        </div>
+                        <div class="col">
+                            {{ object.ret_first_flight.arrive_time }} 
+                        </div>                                                                                    
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Arrive Terminal
+                        </div>
+                        <div class="col">
+                            {% if object.ret_first_flight_arr_term %}
+                                <a href="{{ object.ret_first_flight_arr_term.get_absolute_url }}"> 
+                                    {{ object.ret_first_flight_arr_term }} 
+                                </a>
+                            {% else %}
+                                <span> &mdash; </span>
+                            {% endif %}
+                        </div>                                                                                    
+                    </div>
+                </div>
+            </div>
+
+            {% if object.ret_second_flight %}
+                <div class="row">
+                    <div class="col text-center">
+                        <h4> Second Flight </h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+
+                        <div class="row">
+                            <div class="col">
+                                Second Flight Name
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.ret_second_flight.get_absolute_url }}"> 
+                                    {{ object.ret_second_flight }} 
+                                </a>
+                            </div>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Duration
+                            </div>
+                            <div class="col">
+                                {% if object.ret_second_flight.duration %}
+                                    {{ object.ret_second_flight.duration|floor_div:60 }} h 
+                                    {{ object.ret_second_flight.duration|modulo:60 }} min
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Airline
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.ret_second_flight.airline.get_absolute_url }}"> 
+                                    {{ object.ret_second_flight.airline }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Flight Airplane
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.ret_second_flight.airplane.get_absolute_url }}"> 
+                                    {{ object.ret_second_flight.airplane }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Airport
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.ret_second_flight.depart_airport.get_absolute_url }}"> 
+                                    {{ object.ret_second_flight.depart_airport }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Time
+                            </div>
+                            <div class="col">
+                                {{ object.ret_second_flight.depart_time }} 
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Depart Terminal
+                            </div>
+                            <div class="col">
+                                {% if object.ret_second_flight_dep_term %}
+                                    <a href="{{ object.ret_second_flight_dep_term.get_absolute_url }}"> 
+                                        {{ object.ret_second_flight_dep_term }} 
+                                    </a>
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Airport
+                            </div>
+                            <div class="col">
+                                <a href="{{ object.ret_second_flight.arrive_airport.get_absolute_url }}"> 
+                                    {{ object.ret_second_flight.arrive_airport }} 
+                                </a>
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Time
+                            </div>
+                            <div class="col">
+                                {{ object.ret_first_flight.arrive_time }} 
+                            </div>                                                                                    
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                Arrive Terminal
+                            </div>
+                            <div class="col">
+                                {% if object.ret_second_flight_arr_term %}
+                                    <a href="{{ object.ret_second_flight_arr_term.get_absolute_url }}"> 
+                                        {{ object.ret_second_flight_arr_term }} 
+                                    </a>
+                                {% else %}
+                                    <span> &mdash; </span>
+                                {% endif %}
+                            </div>                                                                                    
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+ 
+    </div>
+        
+    {% if object.notes %}
+    <div class="row mt-4">
+        <div class="col col-md-8 offset-md-2 ">  
+            <div class="row">
+                <div class="col text-center">
+                    <h2> Trip Notes </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"> 
+                    {{ object.notes|safe }}
+                </div>
+            </div>
+        </div>    
+    </div>
+    {% endif%} 
+    
+
+</section>
+
+{% endblock %}
+
+
+

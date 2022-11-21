@@ -1,0 +1,75 @@
+{% extends "base/base.html" %}
+
+{% block head_title %}
+    Login
+{% endblock %}
+
+{% block extrahead %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'users/login-form.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-content">
+    <div class="row">
+        
+        <div class="col">
+            {% if form.errors %}
+
+            <div class="login-form">
+                <form method="post" action="{% url 'users:login' %}">
+                    {% csrf_token %}
+
+                    <h3> Login </h3>
+                    <p> Your username and/or password is/are not correct. </p>
+
+                    <label for="username"> Username </label>
+                    {{ form.username }}
+
+                    <label for="password"> Password </label>
+                    {{ form.password }}
+
+                    <button type="submit"> Submit </button>
+
+                    <input type="hidden" 
+                        name="next" 
+                        value="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% if request.REQUEST.next %}{{ request.REQUEST.next }}{% else %}/{% endif %}{% endif %}" 
+                    />
+                
+                </form>
+            </div>
+
+            {% else %}
+
+            <div class="login-form">
+                <form method="post" action="{% url 'users:login' %}">
+                    {% csrf_token %}
+
+                    <h3> Login </h3>
+                    <label for="username"> Username </label>
+                    {{ form.username }}
+
+                    <label for="password"> Password </label>
+                    {{ form.password }}
+
+                    <button type="submit"> Submit </button>
+
+                    <input type="hidden" 
+                        name="next" 
+                        value="{% if request.META.HTTP_REFERER %}{{ request.META.HTTP_REFERER }}{% else %}{% if request.REQUEST.next %}{{ request.REQUEST.next }}{% else %}/{% endif %}{% endif %}" 
+                    />
+                
+                </form>
+            </div>
+
+            {% endif %}
+        </div>
+        
+    </div>
+</section>
+        
+{% endblock %}
+
+    
+

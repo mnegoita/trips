@@ -1,0 +1,56 @@
+<header id="header">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col col-md-3">
+                <nav class="nav-menu d-none d-lg-block">
+                    <ul> 
+                        <li class="drop-down"><a href="#"> Trips </a>
+                            <ul>                                
+                                <li><a href="{% url 'trips:trip_list' %}"> Trips </a></li>
+                                <li><a href="{% url 'trips:tripclass_list' %}"> Trip Classes </a></li>
+                                <li><a href="{% url 'trips:tripsource_list' %}"> Trip Sources </a></li>
+                                <li><a href="{% url 'trips:traveller_list' %}"> Travellers </a></li>
+                                <li><a href="{% url 'trips:seat_list' %}"> Seats </a></li>                                
+                            </ul>
+                        </li>
+                 
+                        <li class="drop-down"><a href="#"> Flights </a>
+                            <ul>
+                                <li><a href="{% url 'trips:flight_list' %}"> Flights </a></li>
+                                <li><a href="{% url 'trips:airline_list' %}"> Airlines </a></li>
+                                <li><a href="{% url 'trips:city_list' %}"> Cities </a></li>
+                                <li><a href="{% url 'trips:airplane_list' %}"> Airplanes </a></li>
+                                <li><a href="{% url 'trips:airport_list' %}"> Airports </a></li>
+                                <li><a href="{% url 'trips:airportterminal_list' %}"> Airport Terminals </a></li>                                
+                            </ul>
+                        </li>
+                    </ul>                    
+                </nav>
+            </div>
+            
+            <div class="col">                
+                <div class="logo">    
+                    <h1 class="text-light"><a href="{% url 'base:home' %}"><span> Trips </span></a></h1>
+                </div>
+            </div>  
+
+            <div class="col col-md-3">                 
+                <div class="login-logout">
+                    {% if user.is_authenticated %} 
+                        <a class="btn btn-login-logout" href="{% url 'users:logout' %}"> Log Out </a>
+                    {% else %}
+                        <a class="btn btn-login-logout" href="{% url 'users:login' %}"> Log In </a>
+                    {% endif %}
+                </div>                     
+                <div class="search-form header-search-form">
+                    <form action="{% url 'base:search' %}" method="get" role="search">
+                        <input type="text" name="q" placeholder="Search">
+                        <button type="submit"><i class="icofont-search"></i></button>
+                    </form>
+                </div>                              
+            </div>            
+        </div>
+    </div>
+</header>
+
+

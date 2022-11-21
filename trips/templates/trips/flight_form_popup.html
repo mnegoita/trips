@@ -1,0 +1,213 @@
+{% extends 'base/base_form_popup.html' %}
+
+
+{% block head_title %}
+    {% if object.pk %} Edit {{ object }} 
+    {% else %} Add a new {{ obj_type }} 
+    {% endif %}
+{% endblock %}
+
+
+{% block content %} 
+
+    <form action="" method="post" enctype="multipart/form-data" class="form form-horizontal">
+                
+        {% csrf_token %}
+        {% for field in form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+
+        {% if popup %} 
+                <input type="hidden" name="_popup" value="1">  
+        {% endif %}
+
+        <section class="page-heading">
+            <div class="row">    
+                <div class="col text-center">
+                    <h1> 
+                        {% if object.pk %} 
+                            Editing {{ obj_type }} {{ object }} 
+                        {% else %} 
+                            Add a new {{ obj_type|title }} 
+                        {% endif %}
+                    </h1>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-content">
+
+            {% if form.non_field_errors %}
+            <div class="row mt-4">
+                <div class="col">
+                    <div class="card text-white bg-danger">
+                        <div class="card-header">
+                            <strong>Errors</strong>
+                        </div>
+                        <div class="card-body">
+                            {{ form.non_field_errors }}
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            {% endif %}
+
+            <div class="row mt-4">
+                <div class="col text-right">
+                    <button class="btn btn-save" type="submit"> <i class="icofont-save"></i> Save </button> 
+                </div>    
+            </div> 
+
+            <div class="row mt-4">
+                <div class="col">
+                    <h2>{{ obj_type|title }} Details</h2>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Name 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.name.errors %}                
+                                {% for error in form.name.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.name }}
+                        </div>
+                    </div>
+                    <div class="form-row mt-2">
+                        <div class="col-3">
+                            <label for="{{ form.duration.id_for_label }}" class="col-form-label required"> 
+                                Duration 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.duration.errors %}                
+                                {% for error in form.duration.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.duration }} (hours minutes)
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Airline 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.airline.errors %}                
+                                {% for error in form.airline.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.airline }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Airplane 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.airplane.errors %}                
+                                {% for error in form.airplane.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.airplane }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Depart Airport 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.depart_airport.errors %}                
+                                {% for error in form.depart_airport.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.depart_airport }}
+                        </div>
+                    </div>                            
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Arrive Airport 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.arrive_airport.errors %}                
+                                {% for error in form.arrive_airport.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.arrive_airport }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Depart Time 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.depart_time.errors %}                
+                                {% for error in form.depart_time.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.depart_time }}
+                        </div>
+                    </div>
+                    <div class="form-row mt-2">
+                        <div class="col-3">
+                            <label for="{{ form.name.id_for_label }}" class="col-form-label required"> 
+                                Arrive Time 
+                            </label>
+                        </div>
+                        <div class="col">
+                            {% if form.arrive_time.errors %}                
+                                {% for error in form.arrive_time.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.arrive_time }}
+                        </div>
+                    </div>                                                   
+                </div>
+            </div>
+        
+            <div class="row mt-4 mb-4">
+                <div class="col">
+                    <h2> {{ obj_type|title }} Notes </h2>
+                    <div class="form-row">
+                        <div class="col">
+                            {% if form.notes.errors %}                
+                                {% for error in form.notes.errors %}
+                                    <li class="text-danger"><strong>{{ error|escape }}</strong></li>
+                                {% endfor %}                
+                            {% endif %}
+                            {{ form.notes }}
+                        </div>                                
+                    </div> 
+                </div>
+            </div>  
+
+        </section>     
+        
+    </form>
+
+{% endblock %}
+
+
+
+
+
+

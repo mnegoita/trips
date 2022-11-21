@@ -1,0 +1,183 @@
+{% extends 'base/base.html' %}
+{% load render_table from django_tables2 %}
+{% load custom_filters %}
+{% load buttons %}
+
+
+{% block head_title %}
+    {{ object }} 
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+    <div class="row">
+        <div class="col-8">            
+            <div class="breadcrumbs">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% list_view_url object %}"> {{ object|verbose_name_plural }} </a></li>
+                    <li><a href="#"> {{ object }} </a></li>
+                </ol>
+            </div>            
+        </div>
+        <div class="col-4">            
+            <div class="page-buttons text-right">                
+                {% if user.is_authenticated %}              
+                    {% edit_button object %}
+                    {% delete_button object %}
+                {% endif %}
+            </div>            
+        </div>
+    </div>     
+</section>
+
+<section class="page-heading">
+    <div class="row">    
+        <div class="col">
+            <h1> {{ object }} </h1>
+        </div>
+    </div>
+</section>
+
+<section class="page-content">
+    <!--Flight Details-->
+    <div class="row">         
+        <div class="col col-md-8 offset-md-2">
+            <div class="row">
+                <div class="col text-center">
+                    <h2> Details </h2>
+                </div>
+            </div>    
+            <div class="row">
+                <div class="col">
+                    Flight Name: {{ object.name }}
+                </div>
+                <div class="col">
+                    Flight Duration: {{ object.duration|floor_div:60 }} h {{ object.duration|modulo:60 }} min
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Airline: <a href="{{ object.airline.get_absolute_url }}">{{ object.airline }}</a>
+                </div>
+                <div class="col">
+                    Airplane: <a href="{{ object.airplane.get_absolute_url }}"> {{ object.airplane }} </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Departure Airport: <a href="{{ object.depart_airport.get_absolute_url }}"> {{ object.depart_airport }} </a>
+                </div>
+                
+                <div class="col">
+                    Arrival Airport: <a href="{{ object.arrive_airport.get_absolute_url }}"> {{ object.arrive_airport }} </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    Departure Time: {{ object.depart_time }}
+                </div>
+                <div class="col">
+                    Arrival Time: {{ object.arrive_time }} 
+                </div>
+            </div>        
+        </div>    
+    </div> 
+
+    <!--Flight in Trips-->
+    <div class="row">
+        <div class="col">           
+            <div class="row">
+                <div class="col text-center">
+                    <h2> Trips </h2>
+                </div>
+            </div>     
+            <div class="row justify-content-center">
+                
+                {% if out_first_flights %}
+                <div class="col col-sm-12 col-md-6">                
+                    <div class="row">
+                        <div class="col">
+                            <h3> As Outgoing First Flight </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% render_table out_first_flights_table %}
+                        </div>
+                    </div>                   
+                </div>
+                {% endif %}
+
+                {% if out_second_flights %}
+                <div class="col col-sm-12 col-md-6">                    
+                    <div class="row">
+                        <div class="col">
+                            <h3> As Outgoing Second Flight </h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {% render_table out_second_flights_table %}
+                        </div>
+                    </div>                    
+                </div>
+                {% endif %}
+            
+                {% if ret_first_flights %}
+                    <div class="col col-sm-12 col-md-6">                   
+                        <div class="row">
+                            <div class="col">
+                                <h3> As Returning First Flight </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                {% render_table ret_first_flights_table %}
+                            </div>
+                        </div>                   
+                    </div>
+                {% endif %}
+
+                {% if ret_second_flights %}
+                    <div class="col col-sm-12 col-md-6">                        
+                        <div class="row">
+                            <div class="col">
+                                <h3> As Returning Second Flight </h3>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                {% render_table ret_second_flights_table %}
+                            </div>
+                        </div>                        
+                    </div>
+                {% endif %}
+                
+            </div>
+        </div>
+    </div>
+
+    <!--Flight Notes-->
+    {% if object.notes %} 
+    <div class="row">       
+        <div class="col col-md-10 offset-md-1">
+            <div class="row">
+                <div class="col text-center">
+                    <h2> Notes </h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {{ object.notes|safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif%}
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,285 @@
+{% extends 'base/base.html' %}
+{% load render_table from django_tables2 %}
+{% load custom_filters %}
+{% load buttons %}
+
+
+{% block head_title %}
+    Trips
+{% endblock %}
+
+
+{% block extrahead %}
+
+    {{ form.media }}
+
+    {% load static %}
+
+    <link rel="stylesheet" href="{% static 'vendor/select2/select2-4.0.13/dist/css/select2.min.css' %}">
+    <link rel="stylesheet" href="{% static 'vendor/tempus-dominus/tempusdominus-bootstrap-4.min.css' %}">
+
+    <link rel="stylesheet" href="{% static 'base/custom_select2.css' %}">
+    
+{% endblock %}
+
+{% block content %}
+
+<section class="page-header">
+    <div class="row">            
+        <div class="col">            
+            <div class="page-buttons text-right">
+                {% if user.is_authenticated %}
+                    {% add_button app_name obj_name %}
+                {% endif %}
+            </div>            
+        </div>
+    </div> 
+</section>
+
+<section class="page-heading">
+    <div class="row">    
+        <div class="col text-center">
+            <h1> Trips </h1>
+        </div>
+    </div>
+</section>
+
+<section class="page-content">
+
+    <div class="trips-filter-form">
+        <form method="GET" action="." enctype="multipart/form-data">
+            <div class="row">
+                <div class="col col-md-8 offset-md-2">
+                                    
+                    <div class="form-row">
+                        <div class="col col-md-6 offset-md-3">
+                            <div class="input-group">
+                                <input class="form-control" type="search" name="trip_name_contains" placeholder="Trip name contains..." />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt-4">
+                        <div class="col col-4">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="trip_orig">Origin</label>
+                                </div>
+                                <div class="col">
+                                    <select id="trip_orig" class="form-control select2-trips" name="trip_orig">
+                                        <option disabled selected></option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"> {{ city }}  </option>
+                                        {% endfor %}                                
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="trip_dest">Destination</label>
+                                </div>
+                                <div class="col">
+                                    <select id="trip_dest" class="form-control select2-trips" name="trip_dest">
+                                        <option disabled selected></option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"> {{ city }}  </option>
+                                        {% endfor %}                                
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="out_first_stop_city"> Outgoing Stop City </label>
+                                </div>
+                                <div class="col">
+                                    <select id="out_first_stop_city" class="form-control select2-trips" name="out_first_stop_city">
+                                        <option disabled selected></option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"> {{ city }}  </option>
+                                        {% endfor %}                                
+                                    </select>
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="ret_first_stop_city"> Returning Stop City </label>
+                                </div>
+                                <div class="col">
+                                    <select id="ret_first_stop_city" class="form-control select2-trips" name="ret_first_stop_city">
+                                        <option disabled selected></option>
+                                        {% for city in cities %}
+                                            <option value="{{ city }}"> {{ city }}  </option>
+                                        {% endfor %}                                
+                                    </select> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-4">
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="departDateMin">From date:</label> 
+                                </div>
+                                <div class="col">
+                                    <div class="input-group" id="div_id_date_from" data-target-input="nearest">
+                                    <input type="text" name="trip_date_min" id="departDateMin" class="form-control  datetimepicker-input" data-toggle="datetimepicker" data-target="#departDateMin">
+                                    </div>
+                                    <script type="text/javascript">
+                                        function deferDateTimePicker_id_date_from() {
+                                            if (window.jQuery && $.fn.datetimepicker) {
+                                                $('#departDateMin').datetimepicker({"format": "YYYY-MM-DD", "icons": {"time": "fa fa-clock-o"}});
+                                            } else {
+                                                setTimeout(function() { deferDateTimePicker_id_date_from() }, 50);
+                                            }
+                                        }
+                                    
+                                        deferDateTimePicker_id_date_from();
+                                    </script>
+                                </div>
+                            </div>
+                
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="departDateMax">To date:</label>  
+                                </div>
+                                <div class="col">
+                                    <div class="input-group" id="div_id_date_to" data-target-input="nearest">
+                                        <input type="text" name="trip_date_max" id="departDateMax" class="form-control  datetimepicker-input" data-toggle="datetimepicker" data-target="#departDateMax">
+                                    </div>
+                                    <script type="text/javascript">
+                                        function deferDateTimePicker_id_date_to() {
+                                            if (window.jQuery && $.fn.datetimepicker) {
+                                                $('#departDateMax').datetimepicker({"format": "YYYY-MM-DD", "icons": {"time": "fa fa-clock-o"}});
+                                            } else {
+                                                setTimeout(function() { deferDateTimePicker_id_date_to() }, 50);
+                                            }
+                                        }
+                                
+                                        deferDateTimePicker_id_date_to();
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col col-6">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h4> Outgoing Stop Time </h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            Minimum
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=24 class="form-control" id="out_stop_dur_min_hours" 
+                                            placeholder="0" name="out_stop_dur_min_hours" style = "width: 4rem"> 
+                                            hours
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=60 class="form-control" id="out_stop_dur_min_mins" 
+                                            placeholder="0" name="out_stop_dur_min_mins" style = "width: 4rem" value="0">
+                                            mins 
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            Maximum
+                                        </div>
+                                        <div class="col">
+                                        <input type="number" min=0 max=24  class="form-control" id="out_stop_dur_max_hours" 
+                                            placeholder="0" name="out_stop_dur_max_hours" style = "width: 4rem">
+                                            hours
+                                        </div>
+                                        <div class="col">
+                                        <input type="number" min=0 max=60  class="form-control" id="out_stop_dur_max_mins" 
+                                            placeholder="0" name="out_stop_dur_max_mins" style = "width: 4rem" value="0">
+                                            mins
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col col-6">
+                            <div class="row">
+                                <div class="col text-center">
+                                    <h4> Returning Stop Time </h4> 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            Minimum
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=24 class="form-control" id="ret_stop_dur_min_hours" 
+                                            placeholder="0" name="ret_stop_dur_min_hours" style = "width: 4rem"> 
+                                            hours
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=60 class="form-control" id="ret_stop_dur_min_mins" 
+                                            placeholder="0" name="ret_stop_dur_min_mins" style = "width: 4rem" value="0">
+                                            mins
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-row">
+                                        <div class="col">
+                                            Maximum
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=24  class="form-control" id="ret_stop_dur_max_hours" 
+                                        placeholder="0" name="ret_stop_dur_max_hours" style = "width: 4rem"> 
+                                            hours
+                                        </div>
+                                        <div class="col">
+                                            <input type="number" min=0 max=60  class="form-control" id="ret_stop_dur_max_mins" 
+                                            placeholder="0" name="ret_stop_dur_max_mins" style = "width: 4rem" value="0">
+                                            mins
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>               
+
+                    <div class="row mt-4 mb-4">
+                        <div class="col text-right">
+                            <button type="submit" class="btn btn-filter">Filter</button>  
+                        </div>
+                    </div>
+
+            </div>            
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col"> 
+            {% render_table trip_table %}
+        </div>
+    </div>
+
+</section>
+
+{% endblock %}
+
+
+{% block extrascript %}
+    <script src="{% static 'vendor/select2/select2-4.0.13/dist/js/select2.min.js' %}"></script>
+    <script src="{% static 'vendor/moment-js/moment.min.js' %}"></script>
+    <script src="{% static 'vendor/tempus-dominus/tempusdominus-bootstrap-4.min.js' %}"></script>
+
+    <script src="{% static 'base/custom_select2.js' %}"></script>
+
+{% endblock %}

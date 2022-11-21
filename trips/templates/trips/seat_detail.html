@@ -1,0 +1,59 @@
+{% extends 'base/base.html' %}
+{% load custom_filters %}
+{% load buttons %}
+
+
+{% block head_title %}
+    {{ object }} 
+{% endblock %}
+
+
+{% block content %}
+
+<section class="page-header">
+    <div class="row">
+        <div class="col-8">            
+            <div class="breadcrumbs">
+                <ol>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="{% url 'trips:seat_list' %}"> Seats </a></li>
+                    <li><a href="#"> {{ object }} </a></li>
+                </ol>
+            </div>            
+        </div>
+        <div class="col-4">            
+            <div class="page-buttons text-right">                
+                {% if user.is_authenticated %}              
+                    {% edit_button object %}
+                    {% delete_button object %}
+                {% endif %}
+            </div>            
+        </div>
+    </div>     
+</section>
+
+<section class="page-heading">
+    <div class="row">    
+        <div class="col">
+            <h1> {{ object }} </h1>
+        </div>
+    </div>
+</section>
+
+<section class="page-content">
+    <div class="row">
+        <div class="col col-md-6 offset-md-3">
+            <table class="table table-sm">
+                <tr><td>Seat Number</td><td>{{ object.seat_number }}</td></tr>
+                <tr><td>Trip</td><td>  <a href="{{ object.trip.get_absolute_url }}"> {{ object.trip }}  </a> </td></tr>
+                <tr><td>Flight</td><td>  <a href="{{ object.flight.get_absolute_url }}"> {{ object.flight }}  </a> </td></tr>
+                <tr><td>Traveller</td><td> <a href="{{ object.traveller.get_absolute_url }}"> {{ object.traveller }}  </a> </td></tr>
+            </table>
+        </div>
+    </div>
+</section>    
+
+{% endblock %}
+
+
+

@@ -1,0 +1,11 @@
+/*--------------------------------------------------------------
+# select2 styling 
+--------------------------------------------------------------*/
+
+span.select2-selection--multiple {
+    border-color: #009acd !important;   
+}
+
+span.select2-selection {
+    border-color: #009acd !important;   
+}
