@@ -13,7 +13,6 @@
     font-family: "GreatVibes-Regular";
     src: url("../vendor/fonts/great_vibes/GreatVibes-Regular.ttf") format("truetype");
 }
-
 @font-face {
     font-family: "Sono-Regular";
     src: url("../vendor/fonts/sono/static/Sono/Sono-Regular.ttf") format("truetype");
@@ -23,6 +22,7 @@
     font-family: "OpenSans-Regular";
     src: url("../vendor/fonts/open_sans/static/OpenSans/OpenSans-Regular.ttf") format("truetype");
 }
+
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -126,7 +126,7 @@ strong {
 --------------------------------------------------------------*/
 .container-trips {
     width: auto;
-    max-width: 1600px;
+    max-width: 88%;
 }
 
 /*--------------------------------------------------------------
@@ -175,7 +175,7 @@ strong {
     transition: 0.3s;
     font-size: 18px;
 }
-.nav-menu a:hover, .nav-menu li:hover > a { 
+.nav-menu a:hover, .nav-menu li:hover > a {
     text-decoration: none;
 }
 .nav-menu .drop-down ul {
@@ -208,6 +208,7 @@ strong {
 .nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul li:hover > a {
     color: var(--color-06);
 }
+
 .header-search-form{
     float:right;
     margin-right: 5px;
@@ -242,6 +243,12 @@ strong {
 }
 .login-logout {
     float: right;
+}
+
+@media (min-width: 780px) {
+    .nav-menu .login-logout {
+      float:right;
+    }
 }
 
 /* ------ Mobile Navigation ------ */
@@ -622,7 +629,6 @@ strong {
     background-color: #ff7800;
     border-color:  #ff7800;
 }
-
 .btn-login-logout {
     color: #fff;
     background-color: var(--color-01);
