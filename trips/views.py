@@ -32,7 +32,6 @@ from .filters import (
 
 # Paths for common templates
 template_path = 'trips/'
-search_results_template = "base/search_results.html"
 confirm_delete_template = "base/item_confirm_delete.html"
 
 
@@ -40,26 +39,23 @@ confirm_delete_template = "base/item_confirm_delete.html"
 
 # City Views ############################################################
 
-class CityTable(BaseItemsTable):
-    model = City
+class CityTableView(BaseItemsTable):
     table = CityTable
-    filter = CityFilter
     queryset = City.objects.all()    
 
 
-class CitySearchResults(BaseItemsSearchResults):
-    model = City
+class CitySearchResultsView(BaseItemsSearchResults):
+    queryset = City.objects.all()
     table = CityTable
     filter = CityFilter
-    queryset = City.objects.all()
+    
 
-
-class CityDetail(DetailView):
+class CityDetailView(DetailView):
     model = City
     template_name = template_path + 'city_detail.html'
 
 
-class CityCreate(BaseItemCreateWithPopup):
+class CityCreateView(BaseItemCreateWithPopup):
     model = City
     form_class = CityForm
     template_name = template_path + 'city_form.html'
@@ -67,13 +63,13 @@ class CityCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:city_list')  
 
 
-class CityEdit(BaseItemEdit):
+class CityEditView(BaseItemEdit):
     model = City
     form_class = CityForm
     template_name = template_path + 'city_form.html'
 
 
-class CityDelete(DeleteView):
+class CityDeleteView(DeleteView):
     model = City
     success_url = reverse_lazy('trips:city_list')
     template_name = confirm_delete_template
@@ -129,21 +125,18 @@ class CityDelete(DeleteView):
 
 # Airline Views ##############################################
 
-class AirlineTable(BaseItemsTable):
-    model = Airline
+class AirlineTableView(BaseItemsTable):
     table = AirlineTable
-    filter = AirlineFilter
     queryset = Airline.objects.all()    
     
 
-class AirlineSearchResults(BaseItemsSearchResults):
-    model = Airline
+class AirlineSearchResultsView(BaseItemsSearchResults):
+    queryset = Airline.objects.all()
     table = AirlineTable
     filter = AirlineFilter
-    queryset = Airline.objects.all()
+    
 
-
-class AirlineDetail(DetailView):
+class AirlineDetailView(DetailView):
     template_name = 'trips/airline_detail.html'
     model = Airline
     airl_fl_table = AirlineFlightsTable
@@ -164,7 +157,7 @@ class AirlineDetail(DetailView):
         return context
 
 
-class AirlineCreate(BaseItemCreateWithPopup):
+class AirlineCreateView(BaseItemCreateWithPopup):
     model = Airline
     form_class = AirlineForm
     template_name = template_path + 'airline_form.html'
@@ -172,13 +165,13 @@ class AirlineCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:airline_list')      
 
 
-class AirlineEdit(BaseItemEdit):
+class AirlineEditView(BaseItemEdit):
     model = Airline
     form_class = AirlineForm
     template_name = template_path + 'airline_form.html'
 
 
-class AirlineDelete(DeleteView):
+class AirlineDeleteView(DeleteView):
     model = Airline
     success_url = reverse_lazy('trips:airline_list')
     template_name = confirm_delete_template
@@ -225,22 +218,21 @@ class AirlineDelete(DeleteView):
             return self.render_to_response(context) 
         return HttpResponseRedirect(success_url)
 
- 
+
 # Airplane Views #########################################################
 
-class AirplaneList(BaseItemsList):
+class AirplaneListView(BaseItemsList):
     model = Airplane
     paginate_by = 18
 
 
-class AirplaneSearchResults(BaseItemsSearchResults):
-    model = Airplane
+class AirplaneSearchResultsView(BaseItemsSearchResults):
+    queryset = Airplane.objects.all()
     table = AirplaneTable
     filter = AirplaneFilter
-    queryset = Airplane.objects.all()
+    
 
-
-class AirplaneDetail(View):
+class AirplaneDetailView(View):
     template_name = template_path + 'airplane_detail.html'
     table_plane_flights = AirplaneFlightsTable
     
@@ -256,7 +248,7 @@ class AirplaneDetail(View):
         })
     
 
-class AirplaneCreate(BaseItemCreateWithPopup):
+class AirplaneCreateView(BaseItemCreateWithPopup):
     model = Airplane
     form_class = AirplaneForm
     template_name = template_path + 'airplane_form.html'
@@ -264,13 +256,13 @@ class AirplaneCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:airportterminal_list')
 
 
-class AirplaneEdit(BaseItemEdit):
+class AirplaneEditView(BaseItemEdit):
     model = Airplane
     form_class = AirplaneForm
     template_name = template_path + 'airplane_form.html'
 
 
-class AirplaneDelete(DeleteView):
+class AirplaneDeleteView(DeleteView):
     model = Airplane
     success_url = reverse_lazy('trips:airplane_list')
     template_name = confirm_delete_template
@@ -314,21 +306,18 @@ class AirplaneDelete(DeleteView):
 
 # Airport Views #########################################################
 
-class AirportTable(BaseItemsTable):
-    model = Airport
+class AirportTableView(BaseItemsTable):
     table = AirportTable
-    filter = AirportFilter
     queryset = Airport.objects.all()    
     
 
-class AirportSearchResults(BaseItemsSearchResults):
-    model = Airport
+class AirportSearchResultsView(BaseItemsSearchResults):
+    queryset = Airport.objects.all().prefetch_related('city',)
     table = AirportTable
     filter = AirportFilter
-    queryset = Airport.objects.all().prefetch_related('city',)
+    
 
-
-class AirportDetail(View):
+class AirportDetailView(View):
     template_name = template_path + 'airport_detail.html'
     table = AirportTable
     table_depart_from_airport = AirportDepartTable
@@ -358,7 +347,7 @@ class AirportDetail(View):
         })
     
 
-class AirportCreate(BaseItemCreateWithPopup):
+class AirportCreateView(BaseItemCreateWithPopup):
     model = Airport
     form_class = AirportForm
     template_name = template_path + 'airport_form.html'
@@ -366,13 +355,13 @@ class AirportCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:airport_list')      
 
 
-class AirportEdit(BaseItemEdit):
+class AirportEditView(BaseItemEdit):
     model = Airport
     form_class = AirportForm
     template_name = template_path + 'airport_form.html'
 
 
-class AirportDelete(DeleteView):
+class AirportDeleteView(DeleteView):
     model = Airport
     success_url = reverse_lazy('trips:airport_list')
     template_name = confirm_delete_template
@@ -415,21 +404,18 @@ class AirportDelete(DeleteView):
 
 # AirportTerminal Views #########################################################
 
-class AirportTerminalTable(BaseItemsTable):
-    model = AirportTerminal
+class AirportTerminalTableView(BaseItemsTable):
     table = AirportTerminalTable
-    filter = AirportTerminalFilter
     queryset = AirportTerminal.objects.all()    
 
 
-class AirportTerminalSearchResults(BaseItemsSearchResults):
-    model = AirportTerminal
+class AirportTerminalSearchResultsView(BaseItemsSearchResults):
+    queryset = AirportTerminal.objects.all().prefetch_related('airport',)
     table = AirportTerminalTable
     filter = AirportTerminalFilter
-    queryset = AirportTerminal.objects.all().prefetch_related('airport',)
+    
 
-
-class AirportTerminalDetail(DetailView):
+class AirportTerminalDetailView(DetailView):
     model = AirportTerminal
     table_terms_arrs = AirportTerminalFlightsArriveTable
     table_terms_deps = AirportTerminalFlightsDepartTable
@@ -457,7 +443,7 @@ class AirportTerminalDetail(DetailView):
         return context
 
 
-class AirportTerminalCreate(BaseItemCreateWithPopup):
+class AirportTerminalCreateView(BaseItemCreateWithPopup):
     model = AirportTerminal
     form_class = AirportTerminalForm
     template_name = template_path + 'airportterminal_form.html'
@@ -465,13 +451,13 @@ class AirportTerminalCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:airportterminal_list') 
 
 
-class AirportTerminalEdit(BaseItemEdit):
+class AirportTerminalEditView(BaseItemEdit):
     model = AirportTerminal
     form_class = AirportTerminalForm
     template_name = template_path + 'airportterminal_form.html'  
 
 
-class AirportTerminalDelete(DeleteView):
+class AirportTerminalDeleteView(DeleteView):
     model = AirportTerminal
     success_url = reverse_lazy('trips:airportterminal_list')
     template_name = confirm_delete_template
@@ -542,24 +528,21 @@ class AirportTerminalDelete(DeleteView):
 
 # Flight Views #########################################################
 
-class FlightTable(BaseItemsTable):
-    model = Flight
+class FlightTableView(BaseItemsTable):
     table = FlightTable
-    filter = FlightFilter
     queryset = Flight.objects.all().prefetch_related(
         'airline', 'airplane', 'depart_airport', 'arrive_airport', ) 
     template_name = template_path + 'flight_list.html'  
 
 
-class FlightSearchResults(BaseItemsSearchResults):
-    model = Flight
-    table = FlightTable
-    filter = FlightFilter
+class FlightSearchResultsView(BaseItemsSearchResults):
     queryset = Flight.objects.all().prefetch_related(
         'airline', 'airplane', 'depart_airport', 'arrive_airport', )
+    table = FlightTable
+    filter = FlightFilter
+    
 
-
-class FlightDetail(View):
+class FlightDetailView(View):
     template_name = template_path + 'flight_detail.html'
 
     def get(self, request, pk):
@@ -589,7 +572,7 @@ class FlightDetail(View):
         })
 
 
-class FlightCreate(BaseItemCreateWithPopup):
+class FlightCreateView(BaseItemCreateWithPopup):
     model = Flight
     form_class = FlightForm
     template_name = template_path + 'flight_form.html'
@@ -597,13 +580,13 @@ class FlightCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:flight_list')     
 
 
-class FlightEdit(BaseItemEdit):
+class FlightEditView(BaseItemEdit):
     model = Flight
     form_class = FlightForm
     template_name = template_path + 'flight_form.html'
 
 
-class FlightDelete(DeleteView):
+class FlightDeleteView(DeleteView):
     model = Flight
     success_url = reverse_lazy('trips:flight_list')
     template_name = confirm_delete_template
@@ -671,19 +654,18 @@ class FlightDelete(DeleteView):
 
 # TripSource Views ##############################################
 
-class TripSourceList(BaseItemsList):
+class TripSourceListView(BaseItemsList):
     model = TripSource
     paginate_by = 18        
 
 
-class TripSourceSearchResults(BaseItemsSearchResults):
-    model = TripSource
+class TripSourceSearchResultsView(BaseItemsSearchResults):
+    queryset = TripSource.objects.all()
     table = TripSourceTable
     filter = TripSourceFilter
-    queryset = TripSource.objects.all()
+    
 
-
-class TripSourceDetail(DetailView):
+class TripSourceDetailView(DetailView):
     template_name = template_path + 'tripsource_detail.html'
     model = TripSource
 
@@ -708,7 +690,7 @@ class TripSourceDetail(DetailView):
         return context
 
 
-class TripSourceCreate(BaseItemCreateWithPopup):
+class TripSourceCreateView(BaseItemCreateWithPopup):
     model = TripSource
     form_class = TripSourceForm
     template_name = template_path + 'tripsource_form.html'
@@ -716,13 +698,13 @@ class TripSourceCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:tripsource_list')     
 
 
-class TripSourceEdit(BaseItemEdit):
+class TripSourceEditView(BaseItemEdit):
     model = TripSource
     form_class = TripSourceForm
     template_name = template_path + 'tripsource_form.html' 
 
 
-class TripSourceDelete(DeleteView):
+class TripSourceDeleteView(DeleteView):
     model = TripSource
     success_url = reverse_lazy('trips:tripsource_list')
     template_name = confirm_delete_template
@@ -764,20 +746,19 @@ class TripSourceDelete(DeleteView):
 
 
 # TripClass Views ##############################################
-
-class TripClassList(BaseItemsList):
+        
+class TripClassListView(BaseItemsList):
     model = TripClass
     paginate_by = 18
 
 
-class TripClassSearchResults(BaseItemsSearchResults):
-    model = TripClass
+class TripClassSearchResultsView(BaseItemsSearchResults):
+    queryset = TripClass.objects.all()
     table = TripClassTable
     filter = TripClassFilter
-    queryset = TripClass.objects.all()
+    
 
-
-class TripClassDetail(DetailView):
+class TripClassDetailView(DetailView):
     template_name = template_path + 'tripclass_detail.html'
     model = TripClass
 
@@ -798,7 +779,7 @@ class TripClassDetail(DetailView):
         return context
 
 
-class TripClassCreate(BaseItemCreateWithPopup):  
+class TripClassCreateView(BaseItemCreateWithPopup):  
     model = TripClass
     form_class = TripClassForm
     template_name = template_path + 'tripclass_form.html'
@@ -806,13 +787,13 @@ class TripClassCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:tripclass_list')
 
 
-class TripClassEdit(BaseItemEdit):
+class TripClassEditView(BaseItemEdit):
     model = TripClass
     form_class = TripClassForm
     template_name = template_path + 'tripclass_form.html'
 
 
-class TripClassDelete(DeleteView):
+class TripClassDeleteView(DeleteView):
     model = TripClass
     success_url = reverse_lazy('trips:tripclass_list')
     template_name = confirm_delete_template
@@ -862,7 +843,7 @@ class TripClassDelete(DeleteView):
 
 # Trip Views ##############################################
 
-class TripList(View):
+class TripsView(View):
     model = Trip
     table = TripTable
     filter = TripFilter
@@ -963,11 +944,9 @@ class TripList(View):
         })
 
 
-class TripSearchResults(BaseItemsSearchResults):
-    model = Trip
+class TripSearchResultsView(BaseItemsSearchResults):
     table = TripTable
     filter = TripFilter
-    queryset = Trip.objects.all()
     queryset = Trip.objects.all().prefetch_related(
             'orig', 'dest', 'source_found', 
               'out_class', 
@@ -979,12 +958,12 @@ class TripSearchResults(BaseItemsSearchResults):
         )
 
 
-class TripDetail(DetailView):
+class TripDetailView(DetailView):
     model = Trip
     template_name = template_path + 'trip_detail.html'
 
 
-class TripCreate(CreateView):
+class TripCreateView(CreateView):
     model = Trip
     form_class = TripForm
     template_name = template_path + 'trip_form.html'
@@ -1006,7 +985,7 @@ class TripCreate(CreateView):
         return context
         
 
-class TripEdit(BaseItemEdit):
+class TripEditView(BaseItemEdit):
     model = Trip
     form_class = TripForm
     template_name = template_path + 'trip_form.html'
@@ -1025,7 +1004,7 @@ class TripEdit(BaseItemEdit):
         return self.queryset
 
 
-class TripDelete(DeleteView):
+class TripDeleteView(DeleteView):
     model = Trip
     success_url = reverse_lazy('trips:trip_list')
     template_name = confirm_delete_template
@@ -1068,19 +1047,18 @@ class TripDelete(DeleteView):
 
 # Traveller Views #########################################################
 
-class TravellerList(BaseItemsList):
+class TravellerListView(BaseItemsList):
     model = Traveller
     paginate_by = 18
 
 
-class TravellerSearchResults(BaseItemsSearchResults):
-    model = Traveller
+class TravellerSearchResultsView(BaseItemsSearchResults):
+    queryset = Traveller.objects.all()
     table = TravellerTable
     filter = TravellerFilter
-    queryset = Traveller.objects.all()
+    
 
-
-class TravellerDetail(DetailView):
+class TravellerDetailView(DetailView):
     model = Traveller
     trav_trips_table = TravellerSeatsTable
     template_name = template_path + 'traveller_detail.html'
@@ -1099,7 +1077,7 @@ class TravellerDetail(DetailView):
         return context
 
 
-class TravellerCreate(BaseItemCreateWithPopup):
+class TravellerCreateView(BaseItemCreateWithPopup):
     model = Traveller
     form_class = TravellerForm
     template_name = template_path + 'traveller_form.html'
@@ -1107,13 +1085,13 @@ class TravellerCreate(BaseItemCreateWithPopup):
     cancel_button_url = reverse_lazy('trips:traveller_list')         
 
 
-class TravellerEdit(BaseItemEdit):
+class TravellerEditView(BaseItemEdit):
     model = Traveller
     form_class = TravellerForm
     template_name = template_path + 'traveller_form.html'
 
 
-class TravellerDelete(DeleteView):
+class TravellerDeleteView(DeleteView):
     model = Traveller
     success_url = reverse_lazy('trips:traveller_list')
     template_name = confirm_delete_template
@@ -1156,26 +1134,23 @@ class TravellerDelete(DeleteView):
 
 # Seat Views #########################################################
 
-class SeatTable(BaseItemsTable):
-    model = Seat
+class SeatTableView(BaseItemsTable):
     table = SeatTable
-    filter = SeatFilter
     queryset = Seat.objects.all().prefetch_related('traveller', 'trip', 'flight')    
 
 
-class SeatSearchResults(BaseItemsSearchResults):
-    model = Seat
+class SeatSearchResultsView(BaseItemsSearchResults):
+    queryset = Seat.objects.all()
     table = SeatTable
     filter = SeatFilter
-    queryset = Seat.objects.all()
+    
 
-
-class SeatDetail(DetailView):
+class SeatDetailView(DetailView):
     model = Seat
     template_name = template_path + 'seat_detail.html'
 
 
-class SeatCreate(CreateView):
+class SeatCreateView(CreateView):
     model = Seat
     form_class = SeatForm
     template_name = template_path + 'seat_form.html'
@@ -1189,13 +1164,13 @@ class SeatCreate(CreateView):
         return context
 
 
-class SeatEdit(BaseItemEdit):
+class SeatEditView(BaseItemEdit):
     model = Seat
     form_class = SeatForm
     template_name = template_path + 'seat_form.html'
 
 
-class SeatDelete(DeleteView):
+class SeatDeleteView(DeleteView):
     model = Seat
     success_url = reverse_lazy('trips:seat_list')
     template_name = confirm_delete_template
