@@ -688,5 +688,3 @@ class SeatForm(forms.ModelForm):
             'flight', 
             'notes',
             ]
-
-
