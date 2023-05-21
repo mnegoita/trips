@@ -172,4 +172,4 @@ CKEDITOR_CONFIGS = {
     
 LOGIN_URL = '/users/login/'
 
-VERSION = 'v1.2'
+VERSION = 'v1.3'
