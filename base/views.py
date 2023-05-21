@@ -57,29 +57,25 @@ class BaseItemsTable(View):
     A class view to display the items in a table using
     django-tables2
     """
-    model = None
     table = None
-    filter = None
     queryset = None    
     template_name = template_path + 'base_items_list_table.html' 
     paginate_per_page = 14
     
     def get(self, request):
 
-        if self.filter:
-            self.queryset = self.filter(request.GET, self.queryset).qs
-
         table = self.table(self.queryset)
         paginate = {'paginator_class': Paginator, 'per_page': self.paginate_per_page}
         RequestConfig(request, paginate).configure(table)
-        
-        app_name = self.model._meta.app_label
-        obj_name = self.model._meta.verbose_name.lower().replace(" ", "")
+
+        model = self.queryset.model
+        app_name = model._meta.app_label
+        obj_name = model._meta.verbose_name.lower().replace(" ", "")
 
         return render(request, self.template_name, {
             'table': table,
             'queryset': self.queryset,
-            'model': self.model,
+            'model': model,
             'app_name': app_name,
             'obj_name': obj_name,
         })
@@ -95,7 +91,7 @@ class BaseItemsSearchResults(View):
     table = None
     filter = None
     template_name = search_results_template
-    paginate_per_page = 14 
+    paginate_per_page = 14
 
     def get(self, request):
         
@@ -167,7 +163,8 @@ def custom_permission_denied_view(request, exception=None):
 
 def custom_bad_request_view(request, exception=None):
     return render(request, "base/errors/400.html", {})
-    
+
+
 # SearchView #############################################################
 
 SEARCH_MAX_RESULTS = 10
